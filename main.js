@@ -36,3 +36,15 @@ function operate(operator, num1, num2) {
       console.log('Please enter a valid operator wrapped in quotes ( "+", "-", "*", or "/" )');
   }
 }
+
+const display = document.querySelector('.display');
+const numbers = document.querySelectorAll('.number');
+let lastClicked;
+
+function populateDisplay(e) {
+  display.innerHTML = e.target.innerHTML;
+  lastClicked = e.target.innerHTML;
+  console.log(lastClicked);
+}
+
+numbers.forEach((number) => number.addEventListener('click', (e) => populateDisplay(e)))
