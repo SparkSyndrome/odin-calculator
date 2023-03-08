@@ -29,14 +29,24 @@ document.addEventListener('DOMContentLoaded', function() {
     operator = '';
     lastNum = '';
     currentNum = '';
+    result = '';
     display.textContent = currentNum;
-  })
+  });
 
   equals.addEventListener('click', function() {
     operate();
-    display.textContent = result;
+    if (result.toString().length <= 10) {
+      display.textContent = result;
+    } else {
+      display.textContent = result.toString().slice(0,10) + "...";
+    }
     lastNum = currentNum;
     currentNum = '';
+  });
+
+  decimal.addEventListener('click', function(e) {
+    addDecimal(e.target.textContent);
+    display.textContent = currentNum
   })
 })
 
@@ -91,4 +101,10 @@ function divide(num1, num2) {
 
 function round(num) {
   return Math.round(num * 1000000000) / 1000000000;
+}
+
+function addDecimal(decimal) {
+  if (!currentNum.includes(".")) {
+    currentNum += decimal;
+  }
 }
