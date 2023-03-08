@@ -71,20 +71,24 @@ function operate() {
 
 function add(num1, num2) {
   const sum = num1 + num2;
-  result = sum;
+  result = round(sum);
 }
 
 function subtract(num1, num2) {
   const difference = num1 - num2;
-  result = difference;
+  result = round(difference);
 }
 
 function multiply(num1, num2) {
   const product = num1 * num2;
-  result = product;
+  result = round(product);
 }
 
 function divide(num1, num2) {
   const quotient = num1 / num2;
-  result = quotient;
+  result = round(quotient);
+}
+
+function round(num) {
+  return Math.round(num * 1000000000) / 1000000000;
 }
