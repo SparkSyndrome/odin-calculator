@@ -1,110 +1,55 @@
-let operator = '';
-let lastNum = '';
-let currentNum = '';
-let result = '';
+const calculator = document.querySelector('main');
+const keys = document.querySelector('.keys');
+const display = document.querySelector('.display');
 
-document.addEventListener('DOMContentLoaded', function() {
-  const display = document.querySelector('.display');
+keys.addEventListener('click', e => {
+  // Don't allow clicks that aren't buttons
+  if (!e.target.closest('button')) return;
 
-  const clear = document.querySelector('.clear');
-  const backspace = document.querySelector('.backspace');
+  const key = e.target;
+  const keyValue = key.textContent;
+  const displayValue = display.textContent;
+  const { type } = key.dataset;
+  const { previousKeyType } = calculator.dataset;
 
-  const numbers = document.querySelectorAll('.number');
-  const operators = document.querySelectorAll('.operator');
-  const equals = document.querySelector('.equals');
-  
-  const decimal = document.querySelector('.decimal');
-  
-  numbers.forEach((number) => number.addEventListener('click', function(e) {
-    display.textContent = lastNum;
-    handleNumber(e.target.textContent);
-    display.textContent = currentNum;
-  }));
-
-  operators.forEach((operator) => operator.addEventListener('click', function(e) {
-    handleOperator(e.target.textContent);
-  }));
-
-  clear.addEventListener('click', function() {
-    operator = '';
-    lastNum = '';
-    currentNum = '';
-    result = '';
-    display.textContent = currentNum;
-  });
-
-  equals.addEventListener('click', function() {
-    operate();
-    if (result.toString().length <= 10) {
-      display.textContent = result;
+  if (type === 'number') {
+    if (displayValue === '0' || previousKeyType === 'operator') {
+      display.textContent = keyValue;
     } else {
-      display.textContent = result.toString().slice(0,10) + "...";
+      display.textContent = displayValue + keyValue;
     }
-    lastNum = currentNum;
-    currentNum = '';
-  });
+  }
 
-  decimal.addEventListener('click', function(e) {
-    addDecimal(e.target.textContent);
-    display.textContent = currentNum
-  })
+  if (type === 'operator') {
+    const operatorKeys = keys.querySelectorAll('[data-type="operator"]');
+    operatorKeys.forEach((operatorKey) => {
+      operatorKey.classList.remove('btn-primary');
+      operatorKey.classList.add('btn-outline-primary');
+    });
+
+    key.classList.remove('btn-outline-primary');
+    key.classList.add('btn-primary');
+
+    calculator.dataset.firstNumber = displayValue;
+    calculator.dataset.operator = key.dataset.key;
+  }
+
+  if (type === 'equals') {
+    const firstNumber = calculator.dataset.firstNumber;
+    const operator = calculator.dataset.operator;
+    const secondNumber = displayValue;
+    display.textContent = operate(firstNumber, secondNumber, operator);
+  }
+
+  calculator.dataset.previousKeyType = type;
 })
 
-function handleNumber(num) {
-  if (currentNum.length < 10) {
-    currentNum += num;
-  }
-}
+function operate(firstNumber, secondNumber, operator) {
+  firstNumber = parseInt(firstNumber);
+  secondNumber = parseInt(secondNumber);
 
-function handleOperator(op) {
-  operator = op;
-  lastNum = currentNum;
-  currentNum = '';
-}
-
-function operate() {
-  lastNum = Number(lastNum);
-  currentNum = Number(currentNum);
-
-  if (operator === "+") {
-    add(lastNum, currentNum);
-  } else if (operator === "-") {
-    subtract(lastNum, currentNum);
-  } else if (operator === "×") {
-    multiply(lastNum, currentNum);
-  } else if (operator === "÷") {
-    divide(lastNum, currentNum);
-  } else {
-    return;
-  }
-}
-
-function add(num1, num2) {
-  const sum = num1 + num2;
-  result = round(sum);
-}
-
-function subtract(num1, num2) {
-  const difference = num1 - num2;
-  result = round(difference);
-}
-
-function multiply(num1, num2) {
-  const product = num1 * num2;
-  result = round(product);
-}
-
-function divide(num1, num2) {
-  const quotient = num1 / num2;
-  result = round(quotient);
-}
-
-function round(num) {
-  return Math.round(num * 1000000000) / 1000000000;
-}
-
-function addDecimal(decimal) {
-  if (!currentNum.includes(".")) {
-    currentNum += decimal;
-  }
+  if (operator === 'plus') return firstNumber + secondNumber;
+  if (operator === 'minus') return firstNumber - secondNumber;
+  if (operator === 'multiply') return firstNumber * secondNumber;
+  if (operator === 'divide') return firstNumber / secondNumber;
 }
