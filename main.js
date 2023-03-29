@@ -13,7 +13,7 @@ keys.addEventListener('click', e => {
   const { previousKeyType } = calculator.dataset;
 
   if (type === 'number') {
-    if (displayValue === '0' || previousKeyType === 'operator') {
+    if (displayValue === '0' || previousKeyType === 'operator' || previousKeyType === 'equals') {
       display.textContent = keyValue;
     } else {
       display.textContent = displayValue + keyValue;
@@ -35,6 +35,19 @@ keys.addEventListener('click', e => {
     const secondNumber = displayValue;
     display.textContent = operate(firstNumber, secondNumber, operator);
     restoreButtonStyle();
+  }
+
+  if (type === 'clear') {
+    display.textContent = '0';
+    restoreButtonStyle();
+  }
+
+  if (type === 'backspace') {
+    if (displayValue.length < 2) {
+      display.textContent = '0';
+    } else {
+      display.textContent = displayValue.substring(0,displayValue.length-1);
+    }
   }
 
   calculator.dataset.previousKeyType = type;
