@@ -21,12 +21,7 @@ keys.addEventListener('click', e => {
   }
 
   if (type === 'operator') {
-    const operatorKeys = keys.querySelectorAll('[data-type="operator"]');
-    operatorKeys.forEach((operatorKey) => {
-      operatorKey.classList.remove('btn-primary');
-      operatorKey.classList.add('btn-outline-primary');
-    });
-
+    restoreButtonStyle();
     key.classList.remove('btn-outline-primary');
     key.classList.add('btn-primary');
 
@@ -39,10 +34,19 @@ keys.addEventListener('click', e => {
     const operator = calculator.dataset.operator;
     const secondNumber = displayValue;
     display.textContent = operate(firstNumber, secondNumber, operator);
+    restoreButtonStyle();
   }
 
   calculator.dataset.previousKeyType = type;
 })
+
+function restoreButtonStyle() {
+  const operatorKeys = keys.querySelectorAll('[data-type="operator"]');
+  operatorKeys.forEach((operatorKey) => {
+    operatorKey.classList.remove('btn-primary');
+    operatorKey.classList.add('btn-outline-primary');
+  });
+}
 
 function operate(firstNumber, secondNumber, operator) {
   firstNumber = parseInt(firstNumber);
