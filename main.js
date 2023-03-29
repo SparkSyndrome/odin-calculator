@@ -11,10 +11,15 @@ keys.addEventListener('click', e => {
   const displayValue = display.textContent;
   const { type } = key.dataset;
   const { previousKeyType } = calculator.dataset;
+  let firstNumber = '';
+  let operator = undefined;
+  let secondNumber = '';
 
   if (type === 'number') {
     if (displayValue === '0' || previousKeyType === 'operator' || previousKeyType === 'equals') {
       display.textContent = keyValue;
+    } else if (displayValue.length > 8) {
+      return;
     } else {
       display.textContent = displayValue + keyValue;
     }
@@ -30,21 +35,26 @@ keys.addEventListener('click', e => {
   }
 
   if (type === 'equals') {
-    const firstNumber = calculator.dataset.firstNumber;
-    const operator = calculator.dataset.operator;
-    const secondNumber = displayValue;
-    display.textContent = operate(firstNumber, secondNumber, operator);
-    restoreButtonStyle();
+    firstNumber = calculator.dataset.firstNumber;
+    operator = calculator.dataset.operator;
+    secondNumber = displayValue;
+    if (firstNumber == null || operator == null || secondNumber == null) {
+      return
+    } else {
+      display.textContent = operate(firstNumber, secondNumber, operator);
+      restoreButtonStyle();
+    }
   }
 
   if (type === 'clear') {
-    display.textContent = '0';
-    restoreButtonStyle();
+    clear();
   }
 
   if (type === 'backspace') {
     if (displayValue.length < 2) {
       display.textContent = '0';
+    } else if (displayValue === '0' && previousKeyType !== 'operator') {
+      clear();
     } else {
       display.textContent = displayValue.substring(0,displayValue.length-1);
     }
@@ -65,8 +75,16 @@ function operate(firstNumber, secondNumber, operator) {
   firstNumber = parseInt(firstNumber);
   secondNumber = parseInt(secondNumber);
 
-  if (operator === 'plus') return firstNumber + secondNumber;
-  if (operator === 'minus') return firstNumber - secondNumber;
-  if (operator === 'multiply') return firstNumber * secondNumber;
-  if (operator === 'divide') return firstNumber / secondNumber;
+  if (operator === 'plus') return Math.round((firstNumber + secondNumber) * 100000000) / 100000000;
+  if (operator === 'minus') return Math.round((firstNumber - secondNumber) * 100000000) / 100000000;
+  if (operator === 'multiply') return Math.round((firstNumber * secondNumber) * 100000000) / 100000000;
+  if (operator === 'divide') return Math.round((firstNumber / secondNumber) * 100000000) / 100000000;
+}
+
+function clear() {
+  display.textContent = '0';
+  restoreButtonStyle();
+  firstNumber = '';
+  operator = undefined;
+  secondNumber = '';
 }
