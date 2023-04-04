@@ -11,9 +11,6 @@ keys.addEventListener('click', e => {
   const displayValue = display.textContent;
   const { type } = key.dataset;
   const { previousKeyType } = calculator.dataset;
-  let firstNumber = '';
-  let operator = undefined;
-  let secondNumber = '';
 
   if (type === 'number') {
     if (displayValue === '0' || previousKeyType === 'operator' || previousKeyType === 'equals') {
@@ -35,9 +32,9 @@ keys.addEventListener('click', e => {
   }
 
   if (type === 'equals') {
-    firstNumber = calculator.dataset.firstNumber;
-    operator = calculator.dataset.operator;
-    secondNumber = displayValue;
+    const firstNumber = calculator.dataset.firstNumber;
+    const operator = calculator.dataset.operator;
+    const secondNumber = displayValue;
     if (firstNumber == null || operator == null || secondNumber == null) {
       return
     } else {
@@ -84,7 +81,64 @@ function operate(firstNumber, secondNumber, operator) {
 function clear() {
   display.textContent = '0';
   restoreButtonStyle();
-  firstNumber = '';
-  operator = undefined;
-  secondNumber = '';
+  delete calculator.dataset.firstNumber;
+  delete calculator.dataset.operator;
 }
+
+// ===============
+// TESTING
+// ===============
+
+// function testClear() {
+//   clear();
+//   console.assert(display.textContent === '0', 'Clear key; display should be "0"');
+//   console.assert(!calculator.dataset.firstNumber, 'Clear key; no firstNumber remains');
+//   console.assert(!calculator.dataset.operator, 'Clear key; no operator remains');
+// }
+
+// function testKeySequence(test) {
+//   test.keys.forEach(key => {
+//     document.querySelector(`[data-key="${key}"]`).click();
+//   });
+  
+//   console.assert(display.textContent === test.value, test.message);
+
+//   clear();
+//   testClear();
+// }
+
+// const tests = [{
+//   keys: ['1'],
+//   value: '1',
+//   message: "Click 1"
+// }, {
+//   keys: ['1', '5'],
+//   value: '15',
+//   message: "Click 15"
+// }, {
+//   keys: ['1', '5', '9'],
+//   value: '159',
+//   message: "Click 159"
+// }, {
+//   keys: ['9', 'divide', '3', 'equal'],
+//   value: '3',
+//   message: "Calculation with divide (normal)"
+// }, {
+//   keys: ['1', '0', 'divide', '0', 'equal'],
+//   value: 'Infinity',
+//   message: "Calculation with divide (by zero)"
+// }, {
+//   keys: ['1', '5', 'multiply', '9', 'equal'],
+//   value: '135',
+//   message: "Calculation with multiply"
+// }, {
+//   keys: ['3', 'minus', '7', '0', 'equal'],
+//   value: '-67',
+//   message: "Calculation with minus"
+// }, {
+//   keys: ['2', '4', 'plus', '7', 'equal'],
+//   value: '31',
+//   message: "Calculation with plus"
+// }]
+
+// tests.forEach(testKeySequence);
