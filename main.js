@@ -1,5 +1,4 @@
-const keys = document.querySelectorAll("#calculator button");
-const display = document.querySelector(".display");
+// Arithmetic logic
 
 let firstNum = null;
 let secondNum = null;
@@ -37,51 +36,47 @@ function operate(firstNum, secondNum, operator) {
   }
 }
 
-keys.forEach(key => key.addEventListener('click', () => {
-  // const keyValue = key.getAttribute('data-type');
+// Calculator functionality logic
+const keys = Array.from(document.querySelectorAll('button'));
 
-  // if (keyValue === 'number') {
-  //   if (operator === null) {
-  //     if (firstNum === null) {
-  //       firstNum = Number(key.textContent);
-  //     } else {
-  //       firstNum = Number(firstNum.toString() + key.textContent);
-  //     }
-  //     display.textContent = firstNum;
-  //   } else {
-  //     if (secondNum === null) {
-  //       secondNum = Number(key.textContent);
-  //     } else {
-  //       secondNum = Number(secondNum.toString() + key.textContent)
-  //     }
-  //     display.textContent = secondNum;
-  //   }
-  // }
+function pressClear() {
+  console.log("Clear Btn Working");
+}
 
-  // if (keyValue === 'operator') {
-  //   if (firstNum !== null && secondNum !== null && operator !== null) {
-  //     const result = operate(firstNum, secondNum, operator);
-  //     display.textContent = result;
-  //     firstNum = result;
-  //     secondNum = null;
-  //   }
-  //   operator = key.textContent;
-  // }
+function pressBackspace() {
+  console.log("Backspace Btn Working")
+}
 
-  // if (keyValue === 'equal') {
-  //   if (firstNum !== null && secondNum !== null && operator !== null) {
-  //     const result = operate(firstNum, secondNum, operator);
-  //     display.textContent = result;
-  //     firstNum = result;
-  //     secondNum = null;
-  //     operator = null;
-  //   }
-  // }
+function pressOperator() {
+  console.log("Operator Btn Working")
+}
 
-  // if (keyValue === 'clear') {
-  //   firstNum = null;
-  //   secondNum = null;
-  //   operator = null;
-  //   display.textContent = '0';
-  // }
-}));
+function pressNum() {
+  console.log("Num Btn Working")
+}
+
+function pressDecimal() {
+  console.log("Decimal Btn Working")
+}
+
+function pressEquals() {
+  console.log("Equals Btn Working")
+}
+
+function handleButtonPress(keyClassList) {
+  if (keyClassList.contains('clear')) {
+    pressClear();
+  } else if (keyClassList.contains('backspace')) {
+    pressBackspace();
+  } else if (keyClassList.contains('operator')) {
+    pressOperator();
+  } else if (keyClassList.contains('number')) {
+    pressNum();
+  } else if (keyClassList.contains('decimal')) {
+    pressDecimal();
+  } else if (keyClassList.contains('equals')) {
+    pressEquals();
+  }
+}
+
+keys.forEach(key => key.addEventListener('click', () => handleButtonPress(key.classList)));

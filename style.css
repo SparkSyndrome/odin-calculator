@@ -42,11 +42,11 @@ body {
     "zero decimal equals equals";
 }
 
-[data-type="clear"] {
+.clear {
   grid-area: clear;
 }
 
-[data-type="equals"] {
+.equals {
   grid-area: equals;
 }
 
