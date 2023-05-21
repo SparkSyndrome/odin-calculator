@@ -91,7 +91,7 @@ function pressDecimal() {
 
 function pressEquals() {
   if (previousNum !== null && currentNum !== null && operator !== null) {
-    const result = operate(Number(previousNum), Number(currentNum), operator);
+    const result = Math.round(operate(Number(previousNum), Number(currentNum), operator) * 100000000) / 100000000;
     previousNum = null;
     currentNum = result;
     updateDisplay(result);
