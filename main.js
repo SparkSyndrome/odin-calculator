@@ -41,6 +41,10 @@ function operate(firstNum, secondNum, operator) {
 const keys = Array.from(document.querySelectorAll('button'));
 const display = document.querySelector('.display');
 
+function updateDisplay(value) {
+  display.innerText = value;
+}
+
 function pressClear() {
   if (display.style.fontSize !== '50px') {
     display.style.fontSize = '50px';
@@ -49,7 +53,7 @@ function pressClear() {
   previousNum = null;
   currentNum = null;
   operator = null;
-  display.innerText = 0;
+  updateDisplay(0);
 }
 
 function pressBackspace() {
@@ -59,21 +63,20 @@ function pressBackspace() {
 function pressOperator(keyID) {
   if (previousNum !== null && currentNum !== null) {
     pressEquals();
-    operator = keyID;
   }
-  
+
   operator = keyID;
   previousNum = currentNum;
   currentNum = null;
-  display.innerText = previousNum;
+  updateDisplay(previousNum);
   
   console.log(previousNum, operator, currentNum);
 }
 
 function pressNum(keyID) {
   if (display.textContent === '0') {
-    display.innerText = keyID;
-    currentNum = Number(display.innerText);
+    currentNum = keyID;
+    updateDisplay(currentNum);
   } else {
     display.innerText = currentNum;
     display.innerText += keyID;
@@ -87,9 +90,12 @@ function pressDecimal() {
 }
 
 function pressEquals() {
-  display.innerText = operate(previousNum, currentNum, operator);
-  previousNum = null;
-  currentNum = Number(display.innerText);
+  if (previousNum !== null && currentNum !== null && operator !== null) {
+    const result = operate(Number(previousNum), Number(currentNum), operator);
+    previousNum = null;
+    currentNum = result;
+    updateDisplay(result);
+  }
   console.log(previousNum, operator, currentNum);
 }
 
