@@ -1,7 +1,7 @@
 // Arithmetic logic
 
-let firstNum = null;
-let secondNum = null;
+let previousNum = null;
+let currentNum = null;
 let operator = null;
 
 function add(num1, num2) {
@@ -41,8 +41,8 @@ const keys = Array.from(document.querySelectorAll('button'));
 const display = document.querySelector('.display');
 
 function pressClear() {
-  firstNum = null;
-  secondNum = null;
+  previousNum = null;
+  currentNum = null;
   operator = null;
   display.innerText = 0;
 }
@@ -52,25 +52,39 @@ function pressBackspace() {
 }
 
 function pressOperator(keyID) {
-  console.log("Operator Btn Working")
-  console.log(keyID);
+  if (previousNum !== null && currentNum !== null) {
+    pressEquals();
+    operator = keyID;
+  }
+  operator = keyID;
+  previousNum = currentNum;
+  currentNum = null;
+  display.innerText = previousNum;
+  
+  console.log(previousNum, operator, currentNum);
 }
 
 function pressNum(keyID) {
-  if (firstNum === null && display.textContent === '0') {
-    display.innerText = '';
+  if (display.textContent === '0') {
     display.innerText = keyID;
-  } else if (display.innerText.length < 9) {
+    currentNum = Number(display.innerText);
+  } else {
+    display.innerText = currentNum;
     display.innerText += keyID;
+    currentNum = Number(display.innerText);
   }
+  console.log(previousNum, operator, currentNum);
 }
 
 function pressDecimal() {
-  console.log("Decimal Btn Working")
+  console.log("Decimal Btn Working");
 }
 
 function pressEquals() {
-  console.log("Equals Btn Working")
+  display.innerText = operate(previousNum, currentNum, operator);
+  previousNum = null;
+  currentNum = Number(display.innerText);
+  console.log(previousNum, operator, currentNum);
 }
 
 function handleButtonPress(keyClassList, keyID) {
