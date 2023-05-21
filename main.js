@@ -38,21 +38,31 @@ function operate(firstNum, secondNum, operator) {
 
 // Calculator functionality logic
 const keys = Array.from(document.querySelectorAll('button'));
+const display = document.querySelector('.display');
 
 function pressClear() {
-  console.log("Clear Btn Working");
+  firstNum = null;
+  secondNum = null;
+  operator = null;
+  display.innerText = 0;
 }
 
 function pressBackspace() {
   console.log("Backspace Btn Working")
 }
 
-function pressOperator() {
+function pressOperator(keyID) {
   console.log("Operator Btn Working")
+  console.log(keyID);
 }
 
-function pressNum() {
-  console.log("Num Btn Working")
+function pressNum(keyID) {
+  if (firstNum === null && display.textContent === '0') {
+    display.innerText = '';
+    display.innerText = keyID;
+  } else if (display.innerText.length < 9) {
+    display.innerText += keyID;
+  }
 }
 
 function pressDecimal() {
@@ -63,15 +73,15 @@ function pressEquals() {
   console.log("Equals Btn Working")
 }
 
-function handleButtonPress(keyClassList) {
+function handleButtonPress(keyClassList, keyID) {
   if (keyClassList.contains('clear')) {
     pressClear();
   } else if (keyClassList.contains('backspace')) {
     pressBackspace();
   } else if (keyClassList.contains('operator')) {
-    pressOperator();
+    pressOperator(keyID);
   } else if (keyClassList.contains('number')) {
-    pressNum();
+    pressNum(keyID);
   } else if (keyClassList.contains('decimal')) {
     pressDecimal();
   } else if (keyClassList.contains('equals')) {
@@ -79,4 +89,4 @@ function handleButtonPress(keyClassList) {
   }
 }
 
-keys.forEach(key => key.addEventListener('click', () => handleButtonPress(key.classList)));
+keys.forEach(key => key.addEventListener('click', () => handleButtonPress(key.classList, key.id)));
