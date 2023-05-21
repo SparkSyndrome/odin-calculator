@@ -18,6 +18,7 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
   if (num2 === 0) {
+    display.style.fontSize = '31px';
     return "Error: Division by zero";
   }
   return num1 / num2;
@@ -41,6 +42,10 @@ const keys = Array.from(document.querySelectorAll('button'));
 const display = document.querySelector('.display');
 
 function pressClear() {
+  if (display.style.fontSize !== '50px') {
+    display.style.fontSize = '50px';
+  }
+
   previousNum = null;
   currentNum = null;
   operator = null;
@@ -56,6 +61,7 @@ function pressOperator(keyID) {
     pressEquals();
     operator = keyID;
   }
+  
   operator = keyID;
   previousNum = currentNum;
   currentNum = null;
