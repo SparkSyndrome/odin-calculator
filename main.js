@@ -19,7 +19,7 @@ function multiply(num1, num2) {
 function divide(num1, num2) {
   if (num2 === 0) {
     display.style.fontSize = '31px';
-    return "Error: Division by zero";
+    throw new Error("Error: Division by zero");
   }
   return num1 / num2;
 }
@@ -53,6 +53,7 @@ function pressClear() {
   previousNum = null;
   currentNum = null;
   operator = null;
+
   updateDisplay(0);
 }
 
@@ -68,6 +69,7 @@ function pressOperator(keyID) {
   operator = keyID;
   previousNum = currentNum;
   currentNum = null;
+
   updateDisplay(previousNum);
   
   console.log(previousNum, operator, currentNum);
@@ -90,15 +92,24 @@ function pressDecimal() {
 }
 
 function pressEquals() {
+  // Check if user is pressing equals immediately after the operator function
+  // w/out entering a second number
   if (previousNum !== null && currentNum === null && operator !== null) {
     currentNum = previousNum;
   }
 
   if (previousNum !== null && currentNum !== null && operator !== null) {
-    const result = Math.round(operate(Number(previousNum), Number(currentNum), operator) * 100000000) / 100000000;
-    previousNum = null;
-    currentNum = result;
-    updateDisplay(result);
+    try {
+      const result = Math.round(operate(Number(previousNum), Number(currentNum), 
+      operator) * 100000000) / 100000000;
+
+      previousNum = null;
+      currentNum = result;
+
+      updateDisplay(result);
+    } catch (error) {
+      updateDisplay(error.message);
+    }
   }
   console.log(previousNum, operator, currentNum);
 }
