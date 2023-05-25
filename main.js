@@ -91,7 +91,8 @@ function pressNum(keyID) {
 
 function pressDecimal() {
   if (!display.textContent.includes('.')) {
-    calculator.currentNum += '.';
+    display.textContent += '.';
+    calculator.currentNum = display.textContent;
     updateDisplay(calculator.currentNum);
   }
 }
