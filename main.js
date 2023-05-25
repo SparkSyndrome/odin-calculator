@@ -1,8 +1,10 @@
 // Arithmetic logic
 
-let previousNum = null;
-let currentNum = null;
-let operator = null;
+const calculator = {
+  previousNum: null,
+  currentNum: null,
+  operator: null,
+};
 
 function add(num1, num2) {
   return num1 + num2;
@@ -50,9 +52,9 @@ function pressClear() {
     display.style.fontSize = '50px';
   }
 
-  previousNum = null;
-  currentNum = null;
-  operator = null;
+  calculator.previousNum = null;
+  calculator.currentNum = null;
+  calculator.operator = null;
 
   updateDisplay(0);
 }
@@ -62,29 +64,29 @@ function pressBackspace() {
 }
 
 function pressOperator(keyID) {
-  if (previousNum !== null && currentNum !== null) {
+  if (calculator.previousNum !== null && calculator.currentNum !== null) {
     pressEquals();
   }
 
-  operator = keyID;
-  previousNum = currentNum;
-  currentNum = null;
+  calculator.operator = keyID;
+  calculator.previousNum = calculator.currentNum;
+  calculator.currentNum = null;
 
-  updateDisplay(previousNum);
+  updateDisplay(calculator.previousNum);
   
-  console.log(previousNum, operator, currentNum);
+  console.log(calculator.previousNum, calculator.operator, calculator.currentNum);
 }
 
 function pressNum(keyID) {
   if (display.textContent === '0') {
-    currentNum = keyID;
-    updateDisplay(currentNum);
+    calculator.currentNum = keyID;
+    updateDisplay(calculator.currentNum);
   } else {
-    display.innerText = currentNum;
+    display.innerText = calculator.currentNum;
     display.innerText += keyID;
-    currentNum = Number(display.innerText);
+    calculator.currentNum = Number(display.innerText);
   }
-  console.log(previousNum, operator, currentNum);
+  console.log(calculator.previousNum, calculator.operator, calculator.currentNum);
 }
 
 function pressDecimal() {
@@ -94,24 +96,24 @@ function pressDecimal() {
 function pressEquals() {
   // Check if user is pressing equals immediately after the operator function
   // w/out entering a second number
-  if (previousNum !== null && currentNum === null && operator !== null) {
-    currentNum = previousNum;
+  if (calculator.previousNum !== null && calculator.currentNum === null && calculator.operator !== null) {
+    calculator.currentNum = calculator.previousNum;
   }
 
-  if (previousNum !== null && currentNum !== null && operator !== null) {
+  if (calculator.previousNum !== null && calculator.currentNum !== null && calculator.operator !== null) {
     try {
-      const result = Math.round(operate(Number(previousNum), Number(currentNum), 
-      operator) * 100000000) / 100000000;
+      const result = Math.round(operate(Number(calculator.previousNum), Number(calculator.currentNum), 
+      calculator.operator) * 100000000) / 100000000;
 
-      previousNum = null;
-      currentNum = result;
+      calculator.previousNum = null;
+      calculator.currentNum = result;
 
       updateDisplay(result);
     } catch (error) {
       updateDisplay(error.message);
     }
   }
-  console.log(previousNum, operator, currentNum);
+  console.log(calculator.previousNum, calculator.operator, calculator.currentNum);
 }
 
 function handleButtonPress(keyClassList, keyID) {
