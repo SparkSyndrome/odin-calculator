@@ -43,8 +43,8 @@ function operate(firstNum, secondNum, operator) {
 const keys = Array.from(document.querySelectorAll('button'));
 const display = document.querySelector('.display');
 
-function updateDisplay(value) {
-  display.innerText = value;
+function updateDisplay(num = 0) {
+  display.innerText = num;
 }
 
 function pressClear() {
@@ -56,7 +56,7 @@ function pressClear() {
   calculator.currentNum = null;
   calculator.operator = null;
 
-  updateDisplay(0);
+  updateDisplay();
 }
 
 function pressBackspace() {
@@ -90,7 +90,10 @@ function pressNum(keyID) {
 }
 
 function pressDecimal() {
-  console.log("Decimal Btn Working");
+  if (!display.textContent.includes('.')) {
+    calculator.currentNum += '.';
+    updateDisplay(calculator.currentNum);
+  }
 }
 
 function pressEquals() {
