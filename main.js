@@ -43,8 +43,12 @@ function operate(firstNum, secondNum, operator) {
 const keys = Array.from(document.querySelectorAll('button'));
 const display = document.querySelector('.display');
 
+function formatNumber(val) {
+  return Number(val).toLocaleString();
+}
+
 function updateDisplay(num = 0) {
-  display.innerText = num;
+  display.innerText = formatNumber(num);
 }
 
 function pressClear() {
@@ -90,11 +94,15 @@ function pressNum(keyID) {
 }
 
 function pressDecimal() {
-  if (!display.textContent.includes('.')) {
-    display.textContent += '.';
-    calculator.currentNum = display.textContent;
-    updateDisplay(calculator.currentNum);
+  if (calculator.currentNum === null) {
+    calculator.currentNum = '0.';
+  } else if (typeof calculator.currentNum === 'number') {
+    calculator.currentNum = calculator.currentNum.toString() + '.';
+  } else if (!calculator.currentNum.includes('.')) {
+    calculator.currentNum += '.';
   }
+
+  updateDisplay(calculator.currentNum);
 }
 
 function pressEquals() {
