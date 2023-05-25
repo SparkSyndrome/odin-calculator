@@ -90,6 +90,10 @@ function pressDecimal() {
 }
 
 function pressEquals() {
+  if (previousNum !== null && currentNum === null && operator !== null) {
+    currentNum = previousNum;
+  }
+
   if (previousNum !== null && currentNum !== null && operator !== null) {
     const result = Math.round(operate(Number(previousNum), Number(currentNum), operator) * 100000000) / 100000000;
     previousNum = null;
