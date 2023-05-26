@@ -29,6 +29,7 @@ body {
   width: 95%;
   top: -10%;
   left: 2.5%;
+  overflow: hidden;
 }
 
 .keys {

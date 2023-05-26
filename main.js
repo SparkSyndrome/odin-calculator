@@ -83,7 +83,7 @@ function pressOperator(keyID) {
 
 function pressNum(keyID) {
   if (display.textContent === '0') {
-    calculator.currentNum = keyID;
+    calculator.currentNum = Number(keyID);
     updateDisplay(calculator.currentNum);
   } else {
     display.innerText = calculator.currentNum;
@@ -102,7 +102,7 @@ function pressDecimal() {
     calculator.currentNum += '.';
   }
 
-  updateDisplay(calculator.currentNum);
+  display.innerText = calculator.currentNum;
 }
 
 function pressEquals() {
@@ -114,8 +114,7 @@ function pressEquals() {
 
   if (calculator.previousNum !== null && calculator.currentNum !== null && calculator.operator !== null) {
     try {
-      const result = Math.round(operate(Number(calculator.previousNum), Number(calculator.currentNum), 
-      calculator.operator) * 100000000) / 100000000;
+      const result = Number(operate(Number(calculator.previousNum), Number(calculator.currentNum), calculator.operator).toFixed(8));
 
       calculator.previousNum = null;
       calculator.currentNum = result;
