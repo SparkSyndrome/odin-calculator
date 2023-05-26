@@ -64,7 +64,12 @@ function pressClear() {
 }
 
 function pressBackspace() {
-  console.log("Backspace Btn Working")
+  if (display.textContent === '0') {
+    return
+  } else {
+    calculator.currentNum = Number(calculator.currentNum.toString().slice(0,-1));
+    updateDisplay(calculator.currentNum);
+  }
 }
 
 function pressOperator(keyID) {
@@ -78,7 +83,6 @@ function pressOperator(keyID) {
 
   updateDisplay(calculator.previousNum);
   
-  console.log(calculator.previousNum, calculator.operator, calculator.currentNum);
 }
 
 function pressNum(keyID) {
@@ -90,7 +94,6 @@ function pressNum(keyID) {
     display.innerText += keyID;
     calculator.currentNum = Number(display.innerText);
   }
-  console.log(calculator.previousNum, calculator.operator, calculator.currentNum);
 }
 
 function pressDecimal() {
@@ -124,7 +127,6 @@ function pressEquals() {
       updateDisplay(error.message);
     }
   }
-  console.log(calculator.previousNum, calculator.operator, calculator.currentNum);
 }
 
 function handleButtonPress(keyClassList, keyID) {
